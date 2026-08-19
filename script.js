@@ -64,6 +64,17 @@ filterButtons.forEach((btn) => {
     })
 });
 
+container.addEventListener("click" , (e) => {
+    if(e.target.classList.contains("status-toggle")){
+        const index = e.target.getAttribute("data-index");
+
+        allExtensions[index].isActive = e.target.checked;
+        console.log(allExtensions[index].name , "status" , allExtensions[index].isActive);
+    }
+});
+
+
+
 
 
 init_data();
