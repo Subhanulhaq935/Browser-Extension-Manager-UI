@@ -7,6 +7,8 @@ async function init_data() {
         const response = await fetch("data.json");
         allExtensions = await response.json();
         console.log("Data Successfully Fetched", allExtensions);
+
+        renderallCards(allExtensions);
     }
     catch (error) {
         console.error("Error Fetching Data", error);
