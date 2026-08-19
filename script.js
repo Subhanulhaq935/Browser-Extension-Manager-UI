@@ -33,7 +33,7 @@ function renderallCards(list) {
             <div class="card-bottom">
                 <button class="btn-remove" data-index="${index}">Remove</button>
                 <label class="toggle-switch">
-                    <input type="checkbox" class="status-toggle" data-index="${index}" ${item.isActive ? "checked" : ""}>
+                    <input type="checkbox" class="status-toggle" data-name="${item.name}" ${item.isActive ? "checked" : ""}>
                     <span class="slider"></span>
                 </label>
             </div>
@@ -64,12 +64,53 @@ filterButtons.forEach((btn) => {
     })
 });
 
-container.addEventListener("click", (e) => {
-    if (e.target.classList.contains("status-toggle")) {
-        const index = e.target.getAttribute("data-index");
+container.addEventListener("change", (e) => {
 
-        allExtensions[index].isActive = e.target.checked;
-        console.log(allExtensions[index].name, "status", allExtensions[index].isActive);
+    if (e.target.classList.contains("status-toggle")) {
+
+        // Get extension name
+        const name = e.target.getAttribute("data-name");
+
+        // Find the correct extension
+        const item = allExtensions.find(
+            (item) => item.name === name
+        );
+
+        // Update active status
+        item.isActive = e.target.checked;
+
+        // Find currently selected filter
+        const activeBtn = document.querySelector(
+            ".filter-button.active"
+        );
+
+        const currentFilter = activeBtn
+            ? activeBtn.getAttribute("data-filter")
+            : "all";
+
+        // Re-render according to current filter
+        if (currentFilter === "active") {
+
+            renderallCards(
+                allExtensions.filter((item) => item.isActive)
+            );
+
+        } else if (currentFilter === "inactive") {
+
+            renderallCards(
+                allExtensions.filter((item) => !item.isActive)
+            );
+
+        } else {
+
+            renderallCards(allExtensions);
+        }
+
+        console.log(
+            item.name,
+            "status:",
+            item.isActive
+        );
     }
 });
 
@@ -77,20 +118,41 @@ container.addEventListener("click", (e) => {
 
     if (e.target.classList.contains("btn-remove")) {
 
-        const index = Number(e.target.getAttribute("data-index"));
+        // Get extension name
+        const name = e.target.getAttribute("data-name");
 
+        // Find the correct extension
+        const index = allExtensions.findIndex(
+            (item) => item.name === name
+        );
+
+        // Remove extension
         allExtensions.splice(index, 1);
 
-        const activeBtn = document.querySelector(".filter-button.active");
+        // Find current filter
+        const activeBtn = document.querySelector(
+            ".filter-button.active"
+        );
 
-        const currentFilter = activeBtn ? activeBtn.getAttribute("data-filter") : "all";
+        const currentFilter = activeBtn
+            ? activeBtn.getAttribute("data-filter")
+            : "all";
 
+        // Re-render according to current filter
         if (currentFilter === "active") {
 
-            renderallCards(allExtensions.filter((item) => item.isActive));
+            renderallCards(
+                allExtensions.filter((item) => item.isActive)
+            );
+
         } else if (currentFilter === "inactive") {
-            renderallCards(allExtensions.filter((item) => !item.isActive));
+
+            renderallCards(
+                allExtensions.filter((item) => !item.isActive)
+            );
+
         } else {
+
             renderallCards(allExtensions);
         }
     }
