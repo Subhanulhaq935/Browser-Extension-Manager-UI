@@ -28,3 +28,76 @@ body {
     max-width: 1200px;
     margin: 0 auto;
 }
+/* --- Header & Filter Pills --- */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+.page-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+}
+
+.filter-buttons {
+    display: flex;
+    gap: 8px;
+    background-color: var(--pill-bg);
+    padding: 4px;
+    border-radius: 9999px;
+}
+
+.filter-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    padding: 8px 18px;
+    border-radius: 9999px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.filter-btn.active {
+    background-color: var(--coral-accent);
+    color: #ffffff;
+}
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+.page-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+}
+
+.filter-buttons {
+    display: flex;
+    gap: 8px;
+    background-color: var(--pill-bg);
+    padding: 4px;
+    border-radius: 9999px;
+}
+
+.filter-button {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    padding: 8px 18px;
+    border-radius: 9999px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.filter-button.active {
+    background-color: var(--coral-accent);
+    color: #ffffff;
+}
