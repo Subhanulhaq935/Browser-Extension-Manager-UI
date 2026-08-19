@@ -31,7 +31,7 @@ function renderallCards(list) {
                 </div>
             </div>
             <div class="card-bottom">
-                <button class="btn-remove" data-index="${index}">Remove</button>
+                <button class="btn-remove" data-name="${item.name}">Remove</button>
                 <label class="toggle-switch">
                     <input type="checkbox" class="status-toggle" data-name="${item.name}" ${item.isActive ? "checked" : ""}>
                     <span class="slider"></span>
@@ -61,100 +61,46 @@ filterButtons.forEach((btn) => {
             const inactiveExtensions = allExtensions.filter((item) => !item.isActive);
             renderallCards(inactiveExtensions);
         }
-    })
+    });
 });
 
 container.addEventListener("change", (e) => {
-
     if (e.target.classList.contains("status-toggle")) {
-
-        // Get extension name
         const name = e.target.getAttribute("data-name");
+        const item = allExtensions.find((item) => item.name === name);
 
-        // Find the correct extension
-        const item = allExtensions.find(
-            (item) => item.name === name
-        );
-
-        // Update active status
-        item.isActive = e.target.checked;
-
-        // Find currently selected filter
-        const activeBtn = document.querySelector(
-            ".filter-button.active"
-        );
-
-        const currentFilter = activeBtn
-            ? activeBtn.getAttribute("data-filter")
-            : "all";
-
-        // Re-render according to current filter
-        if (currentFilter === "active") {
-
-            renderallCards(
-                allExtensions.filter((item) => item.isActive)
-            );
-
-        } else if (currentFilter === "inactive") {
-
-            renderallCards(
-                allExtensions.filter((item) => !item.isActive)
-            );
-
-        } else {
-
-            renderallCards(allExtensions);
+        if (item) {
+            item.isActive = e.target.checked;
         }
 
-        console.log(
-            item.name,
-            "status:",
-            item.isActive
-        );
+        // Get currently active filter
+        const activeBtn = document.querySelector(".filter-button.active");
+        const currentFilter = activeBtn ? activeBtn.getAttribute("data-filter") : "all";
+
+        // If filtered view no longer matches the card's new status, remove only this card from DOM
+        const card = e.target.closest(".card");
+        if (currentFilter === "active" && !item.isActive) {
+            card?.remove();
+        } else if (currentFilter === "inactive" && item.isActive) {
+            card?.remove();
+        }
+        // If currentFilter is "all", do nothing — checkbox is already toggled smoothly!
     }
 });
 
 container.addEventListener("click", (e) => {
-
     if (e.target.classList.contains("btn-remove")) {
-
-        // Get extension name
         const name = e.target.getAttribute("data-name");
+        const index = allExtensions.findIndex((item) => item.name === name);
 
-        // Find the correct extension
-        const index = allExtensions.findIndex(
-            (item) => item.name === name
-        );
-
-        // Remove extension
-        allExtensions.splice(index, 1);
-
-        // Find current filter
-        const activeBtn = document.querySelector(
-            ".filter-button.active"
-        );
-
-        const currentFilter = activeBtn
-            ? activeBtn.getAttribute("data-filter")
-            : "all";
-
-        // Re-render according to current filter
-        if (currentFilter === "active") {
-
-            renderallCards(
-                allExtensions.filter((item) => item.isActive)
-            );
-
-        } else if (currentFilter === "inactive") {
-
-            renderallCards(
-                allExtensions.filter((item) => !item.isActive)
-            );
-
-        } else {
-
-            renderallCards(allExtensions);
+        // Remove from data array
+        if (index !== -1) {
+            allExtensions.splice(index, 1);
         }
+
+        // Remove only this card from DOM without redrawing everything
+        const card = e.target.closest(".card");
+        card?.remove();
     }
 });
 
