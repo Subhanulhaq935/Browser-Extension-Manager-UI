@@ -1,4 +1,3 @@
-
 * {
     margin: 0;
     padding: 0;
@@ -28,6 +27,7 @@ body {
     max-width: 1200px;
     margin: 0 auto;
 }
+
 .header {
     display: flex;
     justify-content: space-between;
@@ -63,4 +63,28 @@ body {
 .filter-button.active {
     background-color: var(--coral-accent);
     color: #ffffff;
+}
+
+.extensions-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+@media (max-width: 1024px) {
+    .extensions-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .extensions-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
 }
