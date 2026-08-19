@@ -1,4 +1,5 @@
 const container = document.getElementById("extensions-container");
+const filterButtons = document.querySelectorAll(".filter-button");
 let allExtensions = [];
 
 async function init_data()
@@ -41,5 +42,28 @@ function renderallCards(list)
         container.appendChild(card);
     });
 }
+
+filterButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+        filterButtons.forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+
+        const filterType = btn.getAttribute("data-filter");
+
+        if(filterType === "all"){
+            renderallCards(allExtensions);
+        }
+        else if(filterType === "active"){
+            const activeExtensions = allExtensions.filter((item) => item.isActive);
+            renderallCards(activeExtensions);
+        }
+        else if(filterType === "inactive"){
+            const inactiveExtensions = allExtensions.filter((item) => !item.isActive);
+            renderallCards(inactiveExtensions);
+        }
+    })
+});
+
+
 
 init_data();
